@@ -1,0 +1,5 @@
+name: LifeStealPlugin
+version: '${project.version}'
+main: com.codeofbrain.lifestealplugin.LifeStealPlugin
+api-version: 1.18
+authors: [ PoshanTyagi ]

@@ -1,0 +1,21 @@
+heart:
+  name: Super Heart
+  lore:
+    - Right click to add a Heart to health bar
+    - This is most valuable item in the game
+  recipe:
+    shape:
+      - "A A"
+      - " B "
+      - " A "
+    ingredients:
+      A: DIAMOND_BLOCK
+      B: NETHER_STAR
+
+config:
+  default_health: 20
+  max_health: 100
+  add_health_to_killer: 2
+  remove_health_when_killed: 2
+  add_health_using_super_heart: 2
+  remove_health_on_natural_death: 2

@@ -8,31 +8,56 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.Objects;
 
 public final class PlayerUtils {
-    public static void addHeart(Player player) {
+    public static boolean addHeart(Player player, double health) {
         if(player == null)
-            return;
+            return false;
+
+        boolean returnValue = true;
+
+        double DEFAULT_HEALTH = LifeStealPlugin.getPluginConfig().getDouble("config.default_health");
+        double MAX_HEALTH = LifeStealPlugin.getPluginConfig().getDouble("config.max_health");
 
         if(!player.hasMetadata("maxHealth")) {
-            player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), 20.0));
+            player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), DEFAULT_HEALTH));
         }
 
         double maxHealth = player.getMetadata("maxHealth").get(0).asDouble();
-        maxHealth += 2.0;
+        maxHealth += health;
+
+        if(maxHealth > MAX_HEALTH) {
+            maxHealth = MAX_HEALTH;
+            returnValue = false;
+        }
+
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(maxHealth);
         player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), maxHealth));
+
+        return returnValue;
     }
 
-    public static void removeHeart(Player player) {
+    public static boolean removeHeart(Player player, double health) {
         if(player == null)
-            return;
+            return false;
+
+        boolean returnValue = true;
+
+        double DEFAULT_HEALTH = LifeStealPlugin.getPluginConfig().getDouble("config.default_health");
 
         if(!player.hasMetadata("maxHealth")) {
-            player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), 20.0));
+            player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), DEFAULT_HEALTH));
         }
 
         double maxHealth = player.getMetadata("maxHealth").get(0).asDouble();
-        maxHealth -= 2.0;
+        maxHealth -= health;
+
+        if(maxHealth < 0) {
+            maxHealth = 0;
+            returnValue = false;
+        }
+
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(maxHealth);
         player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), maxHealth));
+
+        return returnValue;
     }
 }

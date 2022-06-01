@@ -15,9 +15,18 @@ public class PlayerDeathEventListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity().getPlayer();
+        Player killer = event.getEntity().getKiller();
 
-        if(player != null) {
-            PlayerUtils.removeHeart(player);
+        if (player == null) return;
+
+        if (killer == null) {
+            double health = LifeStealPlugin.getPluginConfig().getDouble("config.remove_health_on_natural_death");
+            PlayerUtils.removeHeart(player, health);
+        } else {
+            double health = LifeStealPlugin.getPluginConfig().getDouble("config.remove_health_when_killed");
+            PlayerUtils.removeHeart(player, health);
+            health = LifeStealPlugin.getPluginConfig().getDouble("config.add_health_to_killer");
+            PlayerUtils.addHeart(killer, health);
         }
     }
 }

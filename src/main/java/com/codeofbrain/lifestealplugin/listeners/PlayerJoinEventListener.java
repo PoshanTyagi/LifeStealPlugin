@@ -16,7 +16,8 @@ public class PlayerJoinEventListener implements Listener {
         Player player = event.getPlayer();
 
         if (!player.hasMetadata("maxHealth")) {
-            player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), 20.0));
+            double DEFAULT_HEALTH = LifeStealPlugin.getPluginConfig().getDouble("config.default_health");
+            player.setMetadata("maxHealth", new FixedMetadataValue(LifeStealPlugin.getInstance(), DEFAULT_HEALTH));
         }
         double maxHealth = player.getMetadata("maxHealth").get(0).asDouble();
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(maxHealth);

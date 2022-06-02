@@ -20,7 +20,8 @@ public final class LifeStealPlugin extends JavaPlugin {
 
         LOGGER = getLogger();
 
-        saveConfig();
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
         config = getConfig();
 
         CustomItems.init();
